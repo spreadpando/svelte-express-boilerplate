@@ -36,22 +36,22 @@ packageJSON.scripts = Object.assign(packageJSON.scripts, {
 })
 
 // Write the package JSON
-fs.writeFileSync(path.join(projectRoot, "../package.json"), JSON.stringify(packageJSON, null, "  "))
+fs.writeFileSync(path.join(projectRoot, "package.json"), JSON.stringify(packageJSON, null, "  "))
 
 // mv src/main.js to main.ts - note, we need to edit rollup.config.js for this too
-const beforeMainJSPath = path.join(projectRoot, "src", "main.js")
-const afterMainTSPath = path.join(projectRoot, "src", "main.ts")
+const beforeMainJSPath = path.join(projectRoot, "client/src", "main.js")
+const afterMainTSPath = path.join(projectRoot, "client/src", "main.ts")
 fs.renameSync(beforeMainJSPath, afterMainTSPath)
 
 // Switch the app.svelte file to use TS
-const appSveltePath = path.join(projectRoot, "src", "App.svelte")
+const appSveltePath = path.join(projectRoot, "client/src", "App.svelte")
 let appFile = fs.readFileSync(appSveltePath, "utf8")
 appFile = appFile.replace("<script>", '<script lang="ts">')
 appFile = appFile.replace("export let name;", 'export let name: string;')
 fs.writeFileSync(appSveltePath, appFile)
 
 // Edit rollup config
-const rollupConfigPath = path.join(projectRoot, "../rollup.config.js")
+const rollupConfigPath = path.join(projectRoot, "rollup.config.js")
 let rollupConfig = fs.readFileSync(rollupConfigPath, "utf8")
 
 // Edit imports
@@ -60,7 +60,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';`)
 
 // Replace name of entry point
-rollupConfig = rollupConfig.replace(`'src/main.js'`, `'src/main.ts'`)
+rollupConfig = rollupConfig.replace(`'client/src/main.js'`, `'client/src/main.ts'`)
 
 // Add preprocessor
 rollupConfig = rollupConfig.replace(
@@ -81,11 +81,11 @@ const tsconfig = `{
   "include": ["client/src/**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "client/public/*"]
 }`
-const tsconfigPath =  path.join(projectRoot, "../tsconfig.json")
+const tsconfigPath =  path.join(projectRoot, "tsconfig.json")
 fs.writeFileSync(tsconfigPath, tsconfig)
 
 // Add global.d.ts
-const dtsPath =  path.join(projectRoot, "src", "global.d.ts")
+const dtsPath =  path.join(projectRoot, "client/src", "global.d.ts")
 fs.writeFileSync(dtsPath, `/// <reference types="svelte" />`)
 
 // Delete this script, but not during testing
@@ -107,8 +107,8 @@ if (!argv[2]) {
 }
 
 // Adds the extension recommendation
-fs.mkdirSync(path.join(projectRoot, "../.vscode"), { recursive: true })
-fs.writeFileSync(path.join(projectRoot, "../.vscode", "extensions.json"), `{
+fs.mkdirSync(path.join(projectRoot, ".vscode"), { recursive: true })
+fs.writeFileSync(path.join(projectRoot, ".vscode", "extensions.json"), `{
   "recommendations": ["svelte.svelte-vscode"]
 }
 `)
