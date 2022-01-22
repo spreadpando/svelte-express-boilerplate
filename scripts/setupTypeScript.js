@@ -20,7 +20,7 @@ const { argv } = require("process")
 const projectRoot = argv[2] || path.join(__dirname, "..")
 
 // Add deps to pkg.json
-const packageJSON = JSON.parse(fs.readFileSync(path.join(projectRoot, "../package.json"), "utf8"))
+const packageJSON = JSON.parse(fs.readFileSync(path.join(projectRoot, "package.json"), "utf8"))
 packageJSON.devDependencies = Object.assign(packageJSON.devDependencies, {
   "svelte-check": "^2.0.0",
   "svelte-preprocess": "^4.0.0",
