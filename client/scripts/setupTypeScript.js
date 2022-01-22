@@ -78,8 +78,7 @@ fs.writeFileSync(rollupConfigPath, rollupConfig)
 // Add TSConfig
 const tsconfig = `{
   "extends": "@tsconfig/svelte/tsconfig.json",
-
-  "include": ["src/**/*"],
+  "include": ["client/src/**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
 }`
 const tsconfigPath =  path.join(projectRoot, "../tsconfig.json")
